@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	ouroboros "github.com/blinklabs-io/gouroboros"
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
 )
@@ -88,18 +87,10 @@ func Load(configFile string) (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error processing environment: %s", err)
 	}
-	// Populate network magic value from network name
-	if globalConfig.Node.Network != "" {
-		network := ouroboros.NetworkByName(globalConfig.Node.Network)
-		if network == ouroboros.NetworkInvalid {
-			return nil, fmt.Errorf("unknown network: %s", globalConfig.Node.Network)
-		}
-		globalConfig.Node.NetworkMagic = network.NetworkMagic
-	}
 	return globalConfig, nil
 }
 
-// Config returns the global config instance
+// GetConfig returns the global config instance
 func GetConfig() *Config {
 	return globalConfig
 }
